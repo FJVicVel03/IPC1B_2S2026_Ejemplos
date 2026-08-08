@@ -109,3 +109,26 @@ Para calcular las distancias sobre la via exterior perimetral de 10x10 (que cons
     *   De lo contrario, `distanciaHoraria = (36 - i_E) + i_S`.
 5.  La distancia en sentido antihorario sera simplemente la diferencia complementaria: `distanciaAntihoraria = 36 - distanciaHoraria`.
 6.  Compare ambos resultados y recomiende la distancia mas corta de forma tecnica y objetiva.
+
+---
+
+## 5. Implementacion de la Ruta Perimetral y Calculo de Distancias
+
+### Area de Trabajo
+El desarrollo se realizo en el archivo de codigo fuente [Main.java](file:///c:/Users/ferna/Desktop/RepositorioLocal/IPC1B_2S2026_Ejemplos/SistemEstacionamiento/src/main/java/org/example/Main.java), especificamente en los siguientes metodos:
+*   `mostrarRutaMasCorta()`: Contiene la logica de despliegue y comparacion.
+*   `mapearCoordenadaAPosicionPerimetral(int, int)`: Metodo auxiliar para conversion geometrica.
+
+### Modificaciones Realizadas
+*   Se removio el mensaje de funcionalidad en desarrollo en la opcion de calculo de ruta.
+*   Se implemento el mapeo matematico que traduce cualquier coordenada bidimensional `(fila, columna)` perteneciente al perimetro exterior en un indice lineal continuo en el rango de `0` a `35`.
+*   Se anadio el calculo modular para obtener la distancia horaria y la diferencia complementaria para la distancia antihoraria.
+*   Se incorporo una estructura condicional que compara los resultados de ambos recorridos para recomendar la ruta mas corta o indicar indiferencia en caso de igualdad de posiciones.
+*   Se formatearon las salidas impresas para mostrar indices en formato 1-based (sumando +1 a los indices de matriz) para que el estudiante visualice los resultados en la misma nomenclatura numerica de la consola.
+
+### Justificacion Tecnica
+Este enfoque de mapeo unidimensional circular es preferible sobre algoritmos de busqueda en grafos o busqueda en anchura (BFS) por las siguientes razones:
+1.  **Complejidad Algoritmica**: El calculo de la distancia se realiza en tiempo constante $O(1)$ y espacio auxiliar $O(1)$, evitando iteraciones innecesarias o almacenamiento de estructuras de datos auxiliares.
+2.  **Restricciones de la Practica**: Al no estar permitido el uso de colecciones del framework de Java (como `Queue`, `ArrayList` o clases de nodos), la indexacion matematica del perimetro es la solucion mas limpia y robusta implementable utilizando exclusivamente tipos primitivos y arreglos nativos.
+3.  **Mantenibilidad**: La logica es comprensible para un estudiante novato, permitiendole analizar la relacion geometrica del perimetro de una matriz de forma abstracta.
+

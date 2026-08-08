@@ -285,21 +285,55 @@ public class Main {
      */
     private static void mostrarRutaMasCorta() {
         System.out.println("\n--- RUTA MAS CORTA PERIMETRAL ---");
-        System.out.println("Entrada en: fila " + filaEntrada + ", columna " + colEntrada);
-        System.out.println("Salida en: fila " + filaSalida + ", columna " + colSalida);
-        
-        // TODO: Estudiante debe completar este metodo.
-        // Pasos recomendados:
-        // La via perimetral externa del tablero de 10x10 consta de 36 posiciones en total.
-        // 1. Mapear o indexar de forma logica la secuencia circular de celdas que conforman la via exterior.
-        //    - Por ejemplo, representarlo como un ciclo cerrado que inicia en (0,0), recorre la fila 0, baja por col 9,
-        //      recorre fila 9 y sube por col 0.
-        // 2. Localizar la posicion relativa de la Entrada (E) y la Salida (S) dentro de esa secuencia lineal circular.
-        // 3. Calcular la distancia en sentido horario (avanzando indices) y antihorario (retrocediendo indices).
-        // 4. Comparar ambas distancias obtenidas en pasos.
-        // 5. Desplegar los resultados de ambas rutas e indicar la recomendacion (ruta menor o indistinto en caso de empate).
-        
-        System.out.println("Funcionalidad en desarrollo. Complete este metodo utilizando algoritmos de recorrido lineal circular.");
+        // Mostrar en formato 1-based para coincidir con la visualización del usuario
+        System.out.println("Entrada: fila " + (filaEntrada + 1) + ", columna " + (colEntrada + 1));
+        System.out.println("Salida: fila " + (filaSalida + 1) + ", columna " + (colSalida + 1));
+
+        int posEntrada = mapearCoordenadaAPosicionPerimetral(filaEntrada, colEntrada);
+        int posSalida = mapearCoordenadaAPosicionPerimetral(filaSalida, colSalida);
+
+
+        /*
+        Caso A (posSalida >= posEntrada): La distancia es la diferencia directa, por ejemplo: 15 - 3 = 12.
+        Caso B (posSalida < posEntrada): La trayectoria cruza el límite de reinicio del anillo (de 35 a 0), por ejemplo, de 30 a 5.
+        La distancia es el tramo final más el inicial: (36 - 30) + 5 = 11
+         */
+
+        // La vía perimetral tiene 36 celdas
+        int distanciaHoraria = (posSalida - posEntrada + 36) % 36; //Esto absorbe la suma adicional de 36 en el Caso A sin alterar su resultado
+        /*
+        Dado que el perímetro es un lazo cerrado de longitud finita (36 posiciones), cualquier desplazamiento desde un punto de origen
+        a un punto de destino se compone únicamente de dos rutas complementarias: la horaria y la antihoraria.
+         */
+        int distanciaAntihoraria = 36 - distanciaHoraria;
+
+        System.out.println("Distancia en sentido horario: " + distanciaHoraria + " posiciones");
+        System.out.println("Distancia en sentido antihorario: " + distanciaAntihoraria + " posiciones");
+
+        if (distanciaHoraria < distanciaAntihoraria) {
+            System.out.println("Ruta recomendada: sentido horario (" + distanciaHoraria + " posiciones)");
+        } else if (distanciaAntihoraria < distanciaHoraria) {
+            System.out.println("Ruta recomendada: sentido antihorario (" + distanciaAntihoraria + " posiciones)");
+        } else {
+            System.out.println("Ruta recomendada: cualquiera de las dos puede utilizarse (" + distanciaHoraria + " posiciones)");
+        }
+    }
+
+    /**
+     * Mapea una coordenada (fila, columna) del perímetro exterior de 10x10
+     * a un índice plano (0 a 35) en sentido horario empezando en (0,0).
+     */
+    private static int mapearCoordenadaAPosicionPerimetral(int fila, int columna) {
+        if (fila == 0) {
+            return columna;
+        } else if (columna == TAMANIO_TABLERO - 1) {
+            return 9 + fila;
+        } else if (fila == TAMANIO_TABLERO - 1) {
+            return 18 + (9 - columna);
+        } else if (columna == 0) {
+            return 27 + (9 - fila);
+        }
+        return -1; // Coordenada no pertenece al perímetro
     }
 
     /**
