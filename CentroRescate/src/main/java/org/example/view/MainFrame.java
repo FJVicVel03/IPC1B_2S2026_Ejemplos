@@ -1,7 +1,7 @@
 package org.example.view;
 
 import org.example.controller.AnimalController;
-import org.example.model.AnimalRepository;
+import org.example.model.AnimalModel;
 import javax.swing.*;
 import java.awt.*;
 
@@ -10,13 +10,13 @@ import java.awt.*;
  * Actúa como contenedor de los diferentes módulos del refugio.
  */
 public class MainFrame extends JFrame {
-    private final AnimalRepository animalRepository;
+    private final AnimalModel animalModel;
     private final AnimalController animalController;
 
     public MainFrame() {
-        // Inicializar repositorios y controladores
-        this.animalRepository = new AnimalRepository();
-        this.animalController = new AnimalController(animalRepository);
+        // Inicializar modelo y controlador
+        this.animalModel = new AnimalModel();
+        this.animalController = new AnimalController(animalModel);
 
         configurarVentana();
         inicializarComponentes();

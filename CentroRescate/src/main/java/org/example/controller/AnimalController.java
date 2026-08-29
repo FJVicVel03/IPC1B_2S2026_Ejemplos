@@ -1,7 +1,7 @@
 package org.example.controller;
 
 import org.example.model.Animal;
-import org.example.model.AnimalRepository;
+import org.example.model.AnimalModel;
 import org.example.view.PanelAnimales;
 import javax.swing.JOptionPane;
 
@@ -11,11 +11,11 @@ import javax.swing.JOptionPane;
  * el Panel de la Vista y el Repositorio del Modelo.
  */
 public class AnimalController {
-    private final AnimalRepository repository;
+    private final AnimalModel model;
     private PanelAnimales view;
 
-    public AnimalController(AnimalRepository repository) {
-        this.repository = repository;
+    public AnimalController(AnimalModel model) {
+        this.model = model;
     }
 
     public void setView(PanelAnimales view) {
@@ -33,7 +33,7 @@ public class AnimalController {
         }
 
         // 2. Validación de ID único
-        if (repository.findById(id) != null) {
+        if (model.findById(id) != null) {
             JOptionPane.showMessageDialog(view, "Ya existe un animal registrado con el código: " + id, "Error de duplicado", JOptionPane.ERROR_MESSAGE);
             return;
         }
@@ -52,12 +52,12 @@ public class AnimalController {
 
         // 4. Creación del objeto y almacenamiento en el arreglo estático
         Animal nuevoAnimal = new Animal(id, nombre, especie, edad, estadoClinico, true);
-        boolean guardado = repository.save(nuevoAnimal);
+        boolean guardado = model.save(nuevoAnimal);
 
         if (guardado) {
             JOptionPane.showMessageDialog(view, "Animal registrado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
             view.limpiarCampos();
-            view.actualizarTabla(repository.findAll(), repository.getTotalAnimales());
+            view.actualizarTabla(model.findAll(), model.getTotalAnimales());
         } else {
             JOptionPane.showMessageDialog(view, "No se pudo guardar el animal. Refugio lleno.", "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -74,10 +74,10 @@ public class AnimalController {
 
         int confirmacion = JOptionPane.showConfirmDialog(view, "¿Está seguro de eliminar este animal?", "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
         if (confirmacion == JOptionPane.YES_OPTION) {
-            boolean eliminado = repository.deleteById(id);
+            boolean eliminado = model.deleteById(id);
             if (eliminado) {
                 JOptionPane.showMessageDialog(view, "Animal eliminado lógicamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                view.actualizarTabla(repository.findAll(), repository.getTotalAnimales());
+                view.actualizarTabla(model.findAll(), model.getTotalAnimales());
             } else {
                 JOptionPane.showMessageDialog(view, "No se encontró el animal a eliminar.", "Error", JOptionPane.ERROR_MESSAGE);
             }
