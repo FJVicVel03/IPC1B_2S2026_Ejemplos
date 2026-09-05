@@ -1,0 +1,1 @@
+& 'C:\Program Files\Java\jdk-24\bin\javac.exe' -sourcepath src\main\java -d target\classes (Get-ChildItem -Recurse src\main\java\*.java | Select-Object -ExpandProperty FullName)
