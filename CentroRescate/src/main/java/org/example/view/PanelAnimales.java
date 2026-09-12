@@ -21,6 +21,8 @@ public class PanelAnimales extends JPanel {
     private JComboBox<String> cbEstadoClinico;
     private JButton btnRegistrar;
     private JButton btnEliminar;
+    private JButton btnReporte;
+    private JButton btnSalir;
 
     // Tabla de visualización
     private JTable tablaAnimales;
@@ -37,7 +39,7 @@ public class PanelAnimales extends JPanel {
         setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
 
         // 1. Formulario de ingreso (Panel Norte / Oeste)
-        JPanel panelFormulario = new JPanel(new GridLayout(6, 2, 8, 8));
+        JPanel panelFormulario = new JPanel(new GridLayout(7, 2, 8, 8));
         panelFormulario.setBorder(BorderFactory.createTitledBorder("Registro de Animales"));
 
         panelFormulario.add(new JLabel("Código / ID:"));
@@ -49,7 +51,7 @@ public class PanelAnimales extends JPanel {
         panelFormulario.add(txtNombre);
 
         panelFormulario.add(new JLabel("Especie:"));
-        cbEspecie = new JComboBox<>(new String[]{"PERRO", "GATO"});
+        cbEspecie = new JComboBox<>(new String[] { "PERRO", "GATO" });
         panelFormulario.add(cbEspecie);
 
         panelFormulario.add(new JLabel("Edad Estimada:"));
@@ -57,7 +59,7 @@ public class PanelAnimales extends JPanel {
         panelFormulario.add(txtEdad);
 
         panelFormulario.add(new JLabel("Estado Clínico:"));
-        cbEstadoClinico = new JComboBox<>(new String[]{"INGRESADO", "EVALUADO", "DISPONIBLE", "ADOPTADO"});
+        cbEstadoClinico = new JComboBox<>(new String[] { "INGRESADO", "EVALUADO", "DISPONIBLE", "ADOPTADO" });
         panelFormulario.add(cbEstadoClinico);
 
         btnRegistrar = new JButton("Registrar Animal");
@@ -66,10 +68,16 @@ public class PanelAnimales extends JPanel {
         btnEliminar = new JButton("Eliminar Seleccionado");
         panelFormulario.add(btnEliminar);
 
+        btnReporte = new JButton("Generar Reporte HTML");
+        panelFormulario.add(btnReporte);
+
+        btnSalir = new JButton("Salir");
+        panelFormulario.add(btnSalir);
+
         add(panelFormulario, BorderLayout.WEST);
 
         // 2. Tabla de visualización (Panel Centro)
-        String[] columnas = {"ID", "Nombre", "Especie", "Edad", "Estado"};
+        String[] columnas = { "ID", "Nombre", "Especie", "Edad", "Estado" };
         tableModel = new DefaultTableModel(columnas, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -97,8 +105,17 @@ public class PanelAnimales extends JPanel {
                 String id = (String) tableModel.getValueAt(selectedRow, 0);
                 controller.eliminarAnimal(id);
             } else {
-                JOptionPane.showMessageDialog(this, "Debe seleccionar un animal de la tabla.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Debe seleccionar un animal de la tabla.", "Advertencia",
+                        JOptionPane.WARNING_MESSAGE);
             }
+        });
+
+        btnReporte.addActionListener(e -> {
+            controller.generarReporte();
+        });
+
+        btnSalir.addActionListener(e -> {
+            System.exit(0);
         });
     }
 
@@ -121,11 +138,11 @@ public class PanelAnimales extends JPanel {
         for (int i = 0; i < cantidad; i++) {
             if (animales[i] != null && animales[i].isActivo()) {
                 Object[] fila = {
-                    animales[i].getId(),
-                    animales[i].getNombre(),
-                    animales[i].getEspecie(),
-                    animales[i].getEdadEstimada(),
-                    animales[i].getEstadoClinico()
+                        animales[i].getId(),
+                        animales[i].getNombre(),
+                        animales[i].getEspecie(),
+                        animales[i].getEdadEstimada(),
+                        animales[i].getEstadoClinico()
                 };
                 tableModel.addRow(fila);
             }

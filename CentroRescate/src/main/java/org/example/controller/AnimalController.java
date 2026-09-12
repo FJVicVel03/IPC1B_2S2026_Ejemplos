@@ -3,6 +3,7 @@ package org.example.controller;
 import org.example.model.Animal;
 import org.example.model.AnimalModel;
 import org.example.view.PanelAnimales;
+import org.example.utils.ReportGenerator;
 import javax.swing.JOptionPane;
 
 /**
@@ -81,6 +82,18 @@ public class AnimalController {
             } else {
                 JOptionPane.showMessageDialog(view, "No se encontró el animal a eliminar.", "Error", JOptionPane.ERROR_MESSAGE);
             }
+        }
+    }
+
+    /**
+     * Genera un reporte HTML de todos los animales registrados.
+     */
+    public void generarReporte() {
+        boolean exito = ReportGenerator.generarReporteAnimales(model.findAll(), model.getTotalAnimales());
+        if (exito) {
+            JOptionPane.showMessageDialog(view, "Reporte HTML generado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(view, "Ocurrió un error al generar el reporte HTML.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 }
